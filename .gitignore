@@ -3,7 +3,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/angular
 /storage/*.key
+/resources/views/generated
 /vendor
 .env
 .env.backup
