@@ -6,6 +6,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { HomeComponent } from './pages/home/home.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @Component({
   selector: '#app',
@@ -42,6 +43,7 @@ export class AppComponent implements AfterViewInit {
 
     const pages = {
       'home': HomeComponent,
+      'about': AboutComponent,
     };
 
     const factories = Object.entries(pages).map(
