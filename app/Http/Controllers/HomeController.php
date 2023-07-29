@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        return Inertia::render('Home');
+        return Inertia::render('home', ['message' => 'Hello from Inertia!']);
     }
 }
