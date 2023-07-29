@@ -2,37 +2,37 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, distinctUntilChanged, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-interface Page {
-  component: string,
-  props: {
-    [key: string]: any,
-  },
-  url: string,
-  version: string,
-}
+import { InertiaPage } from './entities';
 
 @Injectable()
 export class InertiaNavigationService {
 
-  currentPage$ = new BehaviorSubject<Page>(JSON.parse(document.getElementById('app')!.dataset['page']!));
+  get currentPage$() {
+    return this._currentPage$.asObservable();
+  }
 
+  private readonly _currentPage$: BehaviorSubject<InertiaPage>;
   private readonly version: string;
 
   constructor(
     private httpClient: HttpClient
   ) {
+    this._currentPage$ = new BehaviorSubject(
+      JSON.parse(document.getElementById('app')!.dataset['page']!)
+    );
+
+    this.version = this._currentPage$.getValue().version;
+
     window.addEventListener('popstate', () => {
       if ('type' in history.state && history.state.type === 'inertia') {
-        this.currentPage$.next(history.state.page);
+        this._currentPage$.next(history.state.page);
       }
     });
-
-    this.version = this.currentPage$.getValue().version;
   }
 
   navigate(href: string) {
     return this.httpClient
-      .get<Page>(href, {
+      .get<InertiaPage>(href, {
         headers: {
           'X-Inertia': 'true',
           'X-Inertia-Version': this.version,
@@ -41,7 +41,7 @@ export class InertiaNavigationService {
       .pipe(
         distinctUntilChanged(),
         tap(page => {
-          this.currentPage$.next(page);
+          this._currentPage$.next(page);
 
           history.pushState(
             {
