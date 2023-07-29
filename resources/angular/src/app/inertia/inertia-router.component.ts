@@ -36,30 +36,23 @@ export class InertiaRouterComponent {
   ) {}
 
   ngAfterViewInit(): void {
-    if (!this.container) {
-      throw new Error('Missing view container!');
-    }
-
     this.inertiaNavigationService.currentPage$
       .pipe(
         takeUntil(this.unsubscribe$),
       )
       .subscribe(
         page => {
-          const factories = (this.pages ?? []).map(
-            ({component, type}) => ({
-              component,
-              factory: this.resolver.resolveComponentFactory(type)
-            }),
+          if (!this.container) {
+            throw new Error('Missing view container!');
+          }
+
+          const component = this.pages?.find(
+            p => p.component === page.component
           );
 
-          const factory = factories
-            .find(f => f.component === page.component)
-            ?.factory;
-
-          if (factory && this.container) {
+          if (component) {
             this.container.clear();
-            const componentRef: ComponentRef<any> = this.container.createComponent(factory);
+            const componentRef: ComponentRef<any> = this.container.createComponent(component.type);
             Object.entries(page.props).forEach(([prop, value]) => {
               componentRef.instance[prop] = value;
             });
