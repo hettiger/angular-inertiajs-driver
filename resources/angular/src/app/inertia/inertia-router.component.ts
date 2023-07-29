@@ -1,7 +1,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
   Inject,
@@ -28,7 +27,6 @@ export class InertiaRouterComponent {
   unsubscribe$ = new Subject<void>();
 
   constructor(
-    private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private changeDetectorRef: ChangeDetectorRef,
     private inertiaNavigationService: InertiaNavigationService,
