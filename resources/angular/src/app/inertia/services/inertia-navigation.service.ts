@@ -11,9 +11,7 @@ interface Page {
   version: string,
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class InertiaNavigationService {
 
   currentPage$ = new BehaviorSubject<Page>(JSON.parse(document.getElementById('app')!.dataset['page']!));

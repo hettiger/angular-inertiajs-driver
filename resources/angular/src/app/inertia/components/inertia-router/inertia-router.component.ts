@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { InertiaNavigationService } from '../../services/inertia-navigation.service';
-import { HomeComponent } from '../../pages/home/home.component';
-import { AboutComponent } from '../../pages/about/about.component';
+import { HomeComponent } from '../../../pages/home/home.component';
+import { AboutComponent } from '../../../pages/about/about.component';
 
 @Component({
   selector: 'inertia-router',
