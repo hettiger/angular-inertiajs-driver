@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { InertiaLinkDirective } from './directives/inertia-link.directive';
-import { InertiaRouterComponent } from './components/inertia-router/inertia-router.component';
-import { InertiaNavigationService } from './services/inertia-navigation.service';
+import { InertiaLinkDirective } from './inertia-link.directive';
+import { InertiaRouterComponent } from './inertia-router.component';
+import { InertiaNavigationService } from './inertia-navigation.service';
 
 
 

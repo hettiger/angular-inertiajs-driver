@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { fromEvent, mergeMap, Observable, Subject, takeUntil } from 'rxjs';
-import { InertiaNavigationService } from '../services/inertia-navigation.service';
+import { InertiaNavigationService } from './inertia-navigation.service';
 
 @Directive({
   selector: '[inertiaLink]'
