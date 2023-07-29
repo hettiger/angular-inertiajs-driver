@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
 import { InertiaLinkDirective } from './inertia-link.directive';
 import { InertiaRouterComponent } from './inertia-router.component';
 import { InertiaNavigationService } from './inertia-navigation.service';
@@ -10,6 +12,9 @@ import { InertiaNavigationService } from './inertia-navigation.service';
   ],
   providers: [
     InertiaNavigationService
+  ],
+  imports: [
+    HttpClientModule
   ],
   exports: [
     InertiaRouterComponent,
