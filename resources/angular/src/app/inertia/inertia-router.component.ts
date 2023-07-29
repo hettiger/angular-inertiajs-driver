@@ -5,7 +5,7 @@ import {
   ComponentRef,
   ElementRef,
   Inject,
-  InjectionToken,
+  InjectionToken, Optional,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -32,7 +32,7 @@ export class InertiaRouterComponent {
     private elementRef: ElementRef,
     private changeDetectorRef: ChangeDetectorRef,
     private inertiaNavigationService: InertiaNavigationService,
-    @Inject(INERTIA_PAGES) private pages: InertiaPageComponent[],
+    @Optional() @Inject(INERTIA_PAGES) private pages?: InertiaPageComponent[],
   ) {}
 
   ngAfterViewInit(): void {
@@ -46,7 +46,7 @@ export class InertiaRouterComponent {
       )
       .subscribe(
         page => {
-          const factories = this.pages.map(
+          const factories = (this.pages ?? []).map(
             ({component, type}) => ({
               component,
               factory: this.resolver.resolveComponentFactory(type)
