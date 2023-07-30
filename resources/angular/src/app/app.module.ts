@@ -6,6 +6,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { InertiaModule } from './inertia/inertia.module';
 import { INERTIA_PAGES } from './inertia/inertia-router.component';
+import { setupProgress } from "@inertiajs/core";
 
 @NgModule({
   declarations: [
@@ -23,4 +24,17 @@ import { INERTIA_PAGES } from './inertia/inertia-router.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    const isServer = typeof window === 'undefined';
+
+    if (!isServer) {
+      setupProgress({
+        delay: 0,
+        color: 'salmon',
+        includeCSS: true,
+        showSpinner: false,
+      });
+    }
+  }
+}

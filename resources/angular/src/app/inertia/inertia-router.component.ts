@@ -4,7 +4,9 @@ import {
   ComponentRef,
   ElementRef,
   Inject,
-  InjectionToken, Optional, Type,
+  InjectionToken,
+  Optional,
+  Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
