@@ -11,8 +11,6 @@ import { setupProgress } from "@inertiajs/core";
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +20,9 @@ import { setupProgress } from "@inertiajs/core";
     { provide: INERTIA_PAGES, useValue: { component: 'home', type: HomeComponent }, multi: true },
     { provide: INERTIA_PAGES, useValue: { component: 'about', type: AboutComponent }, multi: true },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule {
   constructor() {
