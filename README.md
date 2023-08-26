@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Angular Inertia.js Driver
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Provides Angular support for Inertia.js; uses the original `@inertiajs/core` package.
 
-## About Laravel
+> **Disclaimer:** This project is a work in progress. This is a 3rd party driver.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Getting Started
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+git clone git@github.com:hettiger/angular-inertiajs-driver.git
+cd angular-inertiajs-driver
+composer install
+cp .env.example .env
+php artisan key:generate
+npm -C resources/angular install
+npm run ng:dev
+php artisan serve
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> Using `php artisan serve` is not recommended. Consider using [Laravel Herd](https://herd.laravel.com).
 
-## Learning Laravel
+## Directory Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This project has been initialized using the Laravel installer and 
+[hettiger/laravel-angular-preset](https://github.com/hettiger/laravel-angular-preset).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```text
+angular-interiajs-driver // Laravel App Root
+├── app
+│   ├── …
+│   └── Http
+│       └── Controllers
+│   │       ├── AboutController.php // Inertia.js Page Controller
+│   │       └── HomeController.php // Inertia.js Page Controller
+├── …
+├── public
+│   └── angular // Angular build
+├── resources
+│   ├── angular // Angular App Root ¹
+│   │   └── src
+│   │       ├── app
+│   │       │   ├── inertia // Angular Inertia.js Driver
+│   │       │   └── pages // Inertia.js Page Components
+│   │       └── …
+│   ├── …
+│   └── views
+│       ├── …
+│       └── generated
+│           └── angular.blade.php // Angular Laravel View ¹
+├── routes
+│   ├── …
+│   └── web.php // Inertia.js Page Routes
+└── …
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+¹ The Angular `index.html` file has been modified to include the `@inertiaHead` and `@inertia` directives. 
+Changes made by [hettiger/laravel-angular-preset](https://github.com/hettiger/laravel-angular-preset) keep the 
+`angular.blade.php` view in sync. (It's a slightly modified version of `index.html` that uses e.g. the Laravel 
+`asset()` helper…)
 
-## Laravel Sponsors
+## Adding Pages
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Create dedicated page components using `ng g c pages/name` as you normally would.
 
-### Premium Partners
+> You need to cd into the `resources/angular` directory before trying to run `ng` commands.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Register your page components:
 
-## Contributing
+```ts
+@NgModule({
+    // …
+    providers: [
+        { provide: INERTIA_PAGES, useValue: { component: 'home', type: HomeComponent }, multi: true },
+        { provide: INERTIA_PAGES, useValue: { component: 'about', type: AboutComponent }, multi: true },
+    ],
+    // …
+})
+export class AppModule {
+    // …
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+> Notice the `useValue: { component: 'home', type: HomeComponent }` data structure. The component string corresponds
+> to the `Inertia::render('home', [/* … */]);` call in your Inertia.js Page Controllers.
 
-## Code of Conduct
+Add a Laravel route and a Inertia.js Page Controller to `routes/web.php`:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`Route::get('/', \App\Http\Controllers\HomeController::class);`
 
-## Security Vulnerabilities
+## Roadmap
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- [ ] Support all Inertia.js features
+- [ ] Release the driver as a standalone NPM package that can be installed into an existing Angular application
+
+> There's absolutely no requirement to use 
+> [hettiger/laravel-angular-preset](https://github.com/hettiger/laravel-angular-preset)
+> or to build a monorepo in general.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Angular Inertia.js Driver is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
