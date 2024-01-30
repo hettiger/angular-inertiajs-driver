@@ -1,9 +1,20 @@
-import { Type } from '@angular/core';
+import { InjectionToken, Type } from '@angular/core';
+
+export const INERTIA_PAGES = new InjectionToken<InertiaPage>('INERTIA_PAGES');
+
+export enum InertiaMetadata {
+  component = 'inertia:component'
+}
 
 /**
- * The page components that may be dynamically rendered by the InertiaRouterComponent
+ * The Angular component type
  */
-export interface InertiaPageComponent {
+export type InertiaPageComponent = Type<unknown>;
+
+/**
+ * The pages that may be dynamically rendered by the InertiaRouterComponent
+ */
+export interface InertiaPage {
   /**
    * The component string representation provided to the Inertia::render() method in Laravel
    */
@@ -12,19 +23,5 @@ export interface InertiaPageComponent {
   /**
    * The Angular component type
    */
-  type: Type<unknown>,
-}
-
-/**
- * The Inertia page payload according to the Inertia protocol
- *
- * @see https://inertiajs.com/the-protocol
- */
-export interface InertiaPage {
-  component: string,
-  props: {
-    [key: string]: any,
-  },
-  url: string,
-  version: string,
+  type: InertiaPageComponent,
 }

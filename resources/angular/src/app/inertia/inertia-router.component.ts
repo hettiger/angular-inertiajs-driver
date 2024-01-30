@@ -4,18 +4,14 @@ import {
   ComponentRef,
   ElementRef,
   Inject,
-  InjectionToken,
   Optional,
   Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { InertiaPageComponent } from './entities';
 import { router } from "@inertiajs/core";
 
-export const INERTIA_PAGES = new InjectionToken<InertiaPageComponent>(
-  'INERTIA_PAGES'
-);
+import { INERTIA_PAGES, InertiaPage } from './entities';
 
 @Component({
   selector: 'inertia-router',
@@ -28,7 +24,7 @@ export class InertiaRouterComponent {
   constructor(
     private elementRef: ElementRef,
     private changeDetectorRef: ChangeDetectorRef,
-    @Optional() @Inject(INERTIA_PAGES) private pages?: InertiaPageComponent[],
+    @Optional() @Inject(INERTIA_PAGES) private pages?: InertiaPage[],
   ) {}
 
   ngAfterViewInit(): void {

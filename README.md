@@ -64,26 +64,35 @@ Create dedicated page components using `ng g c pages/name` as you normally would
 
 > You need to cd into the `resources/angular` directory before trying to run `ng` commands.
 
-Register your page components:
+Add the `InertiaPage` decorator:
 
 ```ts
-@NgModule({
-    // …
-    providers: [
-        { provide: INERTIA_PAGES, useValue: { component: 'home', type: HomeComponent }, multi: true },
-        { provide: INERTIA_PAGES, useValue: { component: 'about', type: AboutComponent }, multi: true },
-    ],
-    // …
+@InertiaPage('home')
+@Component({
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
-export class AppModule {
+export class HomeComponent {
     // …
 }
 ```
 
-> Notice the `useValue: { component: 'home', type: HomeComponent }` data structure. The component string corresponds
-> to the `Inertia::render('home', [/* … */]);` call in your Inertia.js Page Controllers.
+> The string value that you pass to the `InertiaPage` decorator corresponds to the 
+> `Inertia::render('home', [/* … */]);` call in your Inertia.js Page Controllers.
 
-Add a Laravel route and a Inertia.js Page Controller to `routes/web.php`:
+Register your page components:
+
+```ts
+// resources/angular/src/app/pages/index.ts
+
+export const PAGES: InertiaPageComponent[] = [
+    HomeComponent,
+    // …
+];
+```
+
+Add a Laravel route and an Inertia.js Page Controller to `routes/web.php`:
 
 `Route::get('/', \App\Http\Controllers\HomeController::class);`
 
